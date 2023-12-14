@@ -8,28 +8,30 @@ import Form from 'react-bootstrap/Form';
 import { StyleSheet, Text, FlatList, TouchableOpacity } from "react-native-web";
 
 //import usestate to set data
-import { useState } from "react";
+import { useState, useEffect } from "react";
+//axios to call data from backend
+import axios from "axios";
 
 //import components
 import TasksComponent from "../components/TaskComponent";
 
 //ffe3d9 for selected tasks
 function InprogressTasks() {
-  const dataArray= [
-    {
-      taskTitle: 'Cook',
-      done: 'false',
-    },
-    {
-      taskTitle: 'Eat',
-      done: 'true',
-    },
-    {
-      taskTitle: 'Study',
-      done: 'false',
-    }
-  ]
-  const [tasks, setTasks] = useState(dataArray);
+
+  const [tasks, setTasks] = useState();
+
+  //useEffect to allow the web to retrieve data without stopping the web
+  useEffect(() => {
+    axios.get('http://localhost:4000/tasks') //axios is kind of like a promise, the web wont freeze
+    .then(
+      (res) => {
+        setTasks(res.data.tasks)
+      }
+    ) //async, callback function is a fn pass using another fn, fill in what we want the callback to do in then ()
+    .catch(
+      (error) => {console.log('Error ctached: '+error)}
+    )
+  }, []); // the [] brackets are to stop the useeffect to be called all the time
 
   //useState for new task
   const [taskTitle, setTaskTile] = useState()
@@ -48,11 +50,21 @@ function InprogressTasks() {
         done: 'false'
       }
     )
-
     setTasks(cloneTaskData);
 
     //to clear up form menu after pusinh in array
     setTaskTile('')
+
+    //create a var that hold the new task
+    const newTask = {
+        taskTitle: taskTitle,
+        done: 'false'
+    }
+
+    //connect to axios post to pot to backend
+    axios.post('http://localhost:4000/tasks', newTask)
+    .then((res) => console.log('from frontend'+res.data))
+    .catch((err)=> console.log('Error ctached: '+err))
 
   }
 
