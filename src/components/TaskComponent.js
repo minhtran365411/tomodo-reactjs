@@ -10,6 +10,7 @@ import { TouchableOpacity, Text, StyleSheet, View } from "react-native-web";
 function TasksComponent(props) {
 
     const [taskStatus, setTaskStatus] = useState(props.task.done);
+    console.log(props)
 
     //toggle task status to show done and un done mask
     const toggleDone = (taskStatus) => {

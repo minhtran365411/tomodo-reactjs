@@ -25,8 +25,9 @@ function InprogressTasks() {
     axios.get('http://localhost:4000/tasks') //axios is kind of like a promise, the web wont freeze
     .then(
       (res) => {
-        setTasks(res.data.tasks);
-        console.log('from inprogress'+tasks);
+        //console.log(res.data);
+        setTasks(res.data);
+        
       }
     ) //async, callback function is a fn pass using another fn, fill in what we want the callback to do in then ()
     .catch(

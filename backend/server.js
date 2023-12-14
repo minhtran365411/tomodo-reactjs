@@ -72,9 +72,15 @@ app.get('/tasks', async (req, res) => {
     //retrieve task data from mongo atlas service
     let tasks = await taskModel.find({}); //find without anything will return all
     //console.log(tasks);
-    res.json(tasks);
+    //i did this to destructure the code, giving it an array structure to use with flatlist
+    res.json([...tasks]);
 })
 
+//get a specific task id to update
+app.get('/tasks/:id', async(req,res) => {
+    let taskLookUp = await taskModel.findById({_id:req.params.id})
+    res.send(taskLookUp)
+})
 //app listen to have server hosted
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
