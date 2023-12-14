@@ -1,13 +1,49 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+
+import {
+  createBrowserRouter,
+  RouterProvider
+} from "react-router-dom";
+
+// Importing the Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+//import pages 
+import Home from "./pages/Home";
+import InprogressTasks from "./pages/InprogressTasks";
+import Paramodo from "./pages/Paramodo";
+import CompletedTasks from './pages/CompletedTasks';
+
+// Creating route for app
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/inprogress-tasks",
+    element: <InprogressTasks />,
+  },
+  {
+    path: "/paramodo",
+    element: <Paramodo />,
+  },
+  {
+    path: "/completed-tasks",
+    element: <CompletedTasks />,
+  }
+]);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
+    
   </React.StrictMode>
 );
 

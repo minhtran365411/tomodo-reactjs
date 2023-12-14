@@ -36,3 +36,31 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar {
+  background-color: #f48b74;
+}
+
+.nav-link.active {
+  color: #F25C05 !important;
+}
+
+.mycol {
+  border: 1px solid #F25C05;
+
+}
+
+.taskContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  
+}
+
+.task {
+  flex-direction: row;
+}
+
+
+
