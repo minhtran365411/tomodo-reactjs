@@ -25,7 +25,8 @@ function InprogressTasks() {
     axios.get('http://localhost:4000/tasks') //axios is kind of like a promise, the web wont freeze
     .then(
       (res) => {
-        setTasks(res.data.tasks)
+        setTasks(res.data.tasks);
+        console.log('from inprogress'+tasks);
       }
     ) //async, callback function is a fn pass using another fn, fill in what we want the callback to do in then ()
     .catch(
@@ -42,18 +43,6 @@ function InprogressTasks() {
     console.log('Task title:' + taskTitle)
     //default status will be false
 
-    //a clone task array data to push new task into
-    const cloneTaskData = tasks;
-    cloneTaskData.push(
-      {
-        taskTitle: taskTitle,
-        done: 'false'
-      }
-    )
-    setTasks(cloneTaskData);
-
-    //to clear up form menu after pusinh in array
-    setTaskTile('')
 
     //create a var that hold the new task
     const newTask = {
@@ -63,7 +52,11 @@ function InprogressTasks() {
 
     //connect to axios post to pot to backend
     axios.post('http://localhost:4000/tasks', newTask)
-    .then((res) => console.log('from frontend'+res.data))
+    .then((res) => {
+      console.log('from frontend'+res.data)
+      //to clear up form menu after pusinh in array
+      setTaskTile('')
+    })
     .catch((err)=> console.log('Error ctached: '+err))
 
   }
