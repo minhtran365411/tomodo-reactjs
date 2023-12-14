@@ -51,7 +51,7 @@ function InprogressTasks() {
 
     setTasks(cloneTaskData);
 
-
+    //to clear up form menu after pusinh in array
     setTaskTile('')
 
   }

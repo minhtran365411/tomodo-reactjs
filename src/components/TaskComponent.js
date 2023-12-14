@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     square: {
       borderColor: "#f26100",
       borderWidth: 2,
-      borderRadius: 5,
+      c: 5,
       marginRight: 15,
       flex: 0.3,
       justifyContent: "center",
