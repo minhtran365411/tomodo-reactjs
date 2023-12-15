@@ -1,25 +1,66 @@
 import { IoTrashBinSharp } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
+import axios from "axios";
 
 //task
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet, View } from "react-native-web";
 
 
 
 function TasksComponent(props) {
 
-    const [taskStatus, setTaskStatus] = useState(props.task.done);
-    console.log(props)
+    const [taskStatus, setTaskStatus] = useState(); //props.task.done
+    const [taskId, setTaskId] = useState(props.task._id);
+
+    //useEffect to implement update status
+    useEffect(() => {
+      axios.get('http://localhost:4000/tasks/'+taskId)
+      .then((res) => {
+        //console.log(res.data.done)
+        setTaskStatus(res.data.done)
+      })
+      .catch((err) =>  console.log('Error whiling caching status')+err)
+    },[taskStatus]);
 
     //toggle task status to show done and un done mask
     const toggleDone = (taskStatus) => {
         if (taskStatus === 'false') {
-            setTaskStatus('true')
+            
+            axios.put('http://localhost:4000/tasks/'+taskId, {done: 'true'})
+            .then((res) => {
+              //Reload data when update
+                axios.get('http://localhost:4000/tasks/'+taskId)
+                .then((res) => {
+                  //console.log(res.data.done)
+                  setTaskStatus(res.data.done)
+                })
+                .catch((err) =>  console.log('Error whiling caching status')+err)
+            })
+            .catch((err)=> console.log('Error while updating status'+ err))
         } else if (taskStatus === 'true') {
-            setTaskStatus('false')
+            axios.put('http://localhost:4000/tasks/'+taskId, {done: 'false'})
+            .then((res) => {
+              //Reload data when update
+              axios.get('http://localhost:4000/tasks/'+taskId)
+              .then((res) => {
+                //console.log(res.data.done)
+                setTaskStatus(res.data.done)
+              })
+              .catch((err) =>  console.log('Error whiling caching status')+err)
+            })
+            .catch((err)=> console.log('Error while updating status'+ err))
         }
+      
     }
+
+  //delete one task
+  const deleteTask = (taskIdToDelete) => {
+    axios.delete('http://localhost:4000/tasks/'+taskIdToDelete)
+    .then()
+    .catch((err) => console.log('Error when delete')+err);
+  }
+
 
     return (
         <TouchableOpacity style={styles.task}
@@ -34,8 +75,8 @@ function TasksComponent(props) {
             {/* conditional styling, have a line through if task is done. Will add condition not being able to edit task if done later */}
           <Text style={[styles.taskTitle, {textDecoration: taskStatus === 'true'? 'line-through': 'none'}]}>{props.task.taskTitle}</Text>
 
-          <TouchableOpacity style={styles.editBtn}> <MdEdit /> </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteBtn}><IoTrashBinSharp style={{color: "#fff"}} /></TouchableOpacity>
+          {/*<TouchableOpacity style={styles.editBtn}> <MdEdit /> </TouchableOpacity>*/}
+          <TouchableOpacity onPress={() => deleteTask(taskId)} style={styles.deleteBtn}><IoTrashBinSharp style={{color: "#fff"}} /></TouchableOpacity>
 
         </TouchableOpacity>
     )

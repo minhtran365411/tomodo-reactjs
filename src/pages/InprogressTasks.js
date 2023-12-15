@@ -27,13 +27,14 @@ function InprogressTasks() {
       (res) => {
         //console.log(res.data);
         setTasks(res.data);
-        
       }
     ) //async, callback function is a fn pass using another fn, fill in what we want the callback to do in then ()
     .catch(
-      (error) => {console.log('Error ctached: '+error)}
+      (error) => {console.log('Error catched: '+error)}
     )
-  }, []); // the [] brackets are to stop the useeffect to be called all the time
+  }, [tasks]); // anything that is in the bracket means that to evoke reload if this data changes => reload data
+  //I have this here because it is efficient for my asdd new task and delete task
+  //update instantly
 
   //useState for new task
   const [taskTitle, setTaskTile] = useState()
@@ -41,7 +42,6 @@ function InprogressTasks() {
   //create new task - add into state array
   const addTask = (e) => {
     e.preventDefault(); //stop this from being called all the time
-    console.log('Task title:' + taskTitle)
     //default status will be false
 
 
@@ -58,9 +58,10 @@ function InprogressTasks() {
       //to clear up form menu after pusinh in array
       setTaskTile('')
     })
-    .catch((err)=> console.log('Error ctached: '+err))
+    .catch((err)=> console.log('Error catched: '+err))
 
   }
+
 
   return (
     <div>

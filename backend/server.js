@@ -36,7 +36,7 @@ app.use('/static', express.static(path.join(__dirname, 'build//static')));
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb+srv://minhtran:EEAQRmchjIJkX1Ca!@tomodocluster.utxrx2u.mongodb.net/');
+  await mongoose.connect('mongodb+srv://admin:DataRep2023@tomodo.uheqf0v.mongodb.net/');
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
@@ -81,6 +81,24 @@ app.get('/tasks/:id', async(req,res) => {
     let taskLookUp = await taskModel.findById({_id:req.params.id})
     res.send(taskLookUp)
 })
+//update task status
+app.put('/tasks/:id', async(req,res) => {
+    console.log('Update status of'+req.params.id);
+    let taskLookUp = await taskModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {new:true}
+    )
+    res.send(taskLookUp)
+})
+
+//delete task
+app.delete('/tasks/:id', async(req,res) => {
+    console.log('Deleted:'+req.params.id);
+    let deleteTask = await taskModel.findByIdAndDelete({_id:req.params.id});
+    res.send(deleteTask);
+})
+
 //app listen to have server hosted
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
