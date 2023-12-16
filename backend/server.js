@@ -105,21 +105,60 @@ app.delete('/tasks/:id', async(req,res) => {
 app.put('/subtask/:id', async(req,res) => {
     let taskLookUp;
     const taskTitleToLookUp = req.body.subTaskTitle; 
-    const taskStatusToUpdate = req.body.done; 
 
-    //console.log(taskTitleToLookUp)
+    //update status
+    if(req.body.done) {
+        const taskStatusToUpdate = req.body.done; 
+        //subTasks: {$elemMatch:  {subTaskTitle: taskTitleToLookUp}}
+            //look up the task that hold that subtask
+            taskLookUp = await taskModel.updateOne({_id:req.params.id},
+                {
+                    $set : {
+                        "subTasks.$[subTasks].done": taskStatusToUpdate //only update that specific record
+                    }},
+                    { arrayFilters: [ { "subTasks.subTaskTitle": {$eq: taskTitleToLookUp} } ], upsert: true } //using array filter to read in the record
+            );
+        //console.log(taskLookUp)
+        res.send(taskLookUp)
+    }
+    
+    //update title
+    if(req.body.newSubTaskTitle) {
+        const taskTitleToUpdate = req.body.newSubTaskTitle; 
 
-    //subTasks: {$elemMatch:  {subTaskTitle: taskTitleToLookUp}}
-    //look up the task that hold that subtask
+        //subTasks: {$elemMatch:  {subTaskTitle: taskTitleToLookUp}}
+            //look up the task that hold that subtask
+            taskLookUp = await taskModel.updateOne({_id:req.params.id},
+                {
+                    $set : {
+                        "subTasks.$[subTasks].subTaskTitle": taskTitleToUpdate //only update that specific record
+                    }},
+                    { arrayFilters: [ { "subTasks.subTaskTitle": {$eq: taskTitleToLookUp} } ], upsert: true } //using array filter to read in the record
+            );
+        //console.log(taskLookUp)
+        res.send(taskLookUp)
+    }
+
+    
+})
+
+//delete subtask
+app.put('/subtask/delete/:id', async(req,res) => {
+        
+    let taskLookUp;
+    const taskTitleToDelete = req.body.subTaskTitle; 
+
+
+        //look up the task that hold that subtask
         taskLookUp = await taskModel.updateOne({_id:req.params.id},
             {
-                $set : {
-                    "subTasks.$[subTasks].done": taskStatusToUpdate //only update that specific record
-                }},
-                { arrayFilters: [ { "subTasks.subTaskTitle": {$eq: taskTitleToLookUp} } ], upsert: true } //using array filter to read in the record
+                $pull : {
+                    subTasks: {subTaskTitle: taskTitleToDelete}  //find that sub task and delete
+                }}
         );
-    //console.log(taskLookUp)
     res.send(taskLookUp)
+     
+
 })
 
 //app listen to have server hosted
