@@ -4,7 +4,7 @@ import axios from "axios";
 
 //task
 import { useEffect, useState } from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from "react-native-web";
+import { TouchableOpacity, Text, StyleSheet } from "react-native-web";
 
 
 
@@ -12,6 +12,8 @@ function TasksComponent(props) {
 
     const [taskStatus, setTaskStatus] = useState(); //props.task.done
     const [taskId, setTaskId] = useState(props.task._id);
+    const [subTasks, setSubTasks] = useState([]);
+
 
     //useEffect to implement update status
     useEffect(() => {
@@ -63,8 +65,16 @@ function TasksComponent(props) {
 
 
     return (
-        <TouchableOpacity style={styles.task}
-          horizontal={true} >
+        <TouchableOpacity style={[styles.task,
+        { //this is to highlight selected big task
+          backgroundColor: props.checkSelected === taskId ? '#fad2d2' : '#fff'
+        }]}
+          horizontal={true} 
+          onPress={() => {
+            props.selectedFn(taskId);
+            props.subTaskFn(props.task.subTasks); //to reset sub task list
+          }}
+          >
 
           <TouchableOpacity onPress={() => toggleDone(taskStatus)} style={styles.square}>
             <Text>
@@ -73,7 +83,7 @@ function TasksComponent(props) {
           </TouchableOpacity>
         
             {/* conditional styling, have a line through if task is done. Will add condition not being able to edit task if done later */}
-          <Text style={[styles.taskTitle, {textDecoration: taskStatus === 'true'? 'line-through': 'none'}]}>{props.task.taskTitle}</Text>
+          <Text style={[styles.taskTitle, {color: taskStatus === 'true'? '#a8a8a8':'#000',textDecoration: taskStatus === 'true'? 'line-through': 'none'}]}>{props.task.taskTitle}</Text>
 
           {/*<TouchableOpacity style={styles.editBtn}> <MdEdit /> </TouchableOpacity>*/}
           <TouchableOpacity onPress={() => deleteTask(taskId)} style={styles.deleteBtn}><IoTrashBinSharp style={{color: "#fff"}} /></TouchableOpacity>

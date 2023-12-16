@@ -44,7 +44,8 @@ async function main() {
 //use mongoose schema to create a model for data
 const taskSchema = new mongoose.Schema({
     taskTitle: String,
-    done: String
+    done: String,
+    subTasks: Array
 })
 
 //Create the model from Schema
@@ -60,7 +61,8 @@ app.post('/tasks', (req, res) => {
     //add req data into model
     taskModel.create({
         taskTitle: req.body.taskTitle,
-        done: req.body.done
+        done: req.body.done,
+        subTasks: []
     })
     .then(() => {res.send('New task created!')})
     .catch(() => {res.send('Error occured when creating a new task')})
@@ -97,6 +99,28 @@ app.delete('/tasks/:id', async(req,res) => {
     console.log('Deleted:'+req.params.id);
     let deleteTask = await taskModel.findByIdAndDelete({_id:req.params.id});
     res.send(deleteTask);
+})
+
+//get a specific sub task from task id to update
+app.put('/subtask/:id', async(req,res) => {
+    let taskLookUp;
+    const taskId = req.body.selectedTaskId;
+    const taskTitleToLookUp = req.body.subTaskTitle; 
+    const taskStatusToUpdate = req.body.done; 
+    const index = req.body.index;
+
+    //console.log(taskTitleToLookUp)
+
+//subTasks: {$elemMatch:  {subTaskTitle: taskTitleToLookUp}}
+        taskLookUp = await taskModel.updateOne({_id:req.params.id},
+            {
+                $set : {
+                    "subTasks.$[subTasks].done": taskStatusToUpdate 
+                }},
+                { arrayFilters: [ { "subTasks.subTaskTitle": {$eq: taskTitleToLookUp} } ], upsert: true }
+        );
+    console.log(taskLookUp)
+    res.send(taskLookUp)
 })
 
 //app listen to have server hosted
