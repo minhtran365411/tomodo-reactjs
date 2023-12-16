@@ -19,21 +19,19 @@ const toggleDone = (taskStatus) => {
         //setTaskStatus('true');
 
         let subTaskToUpdate = {
-          taskId: props.selectedTaskId,
           subTaskTitle: props.subTask.subTaskTitle, 
           done: 'true',
-          index: props.index
         }
 
         axios.put('http://localhost:4000/subtask/'+ props.selectedTaskId, subTaskToUpdate)
             .then((res) => {
               //Reload data when update
-                // axios.get('http://localhost:4000/tasks/'+props.selectedTaskId)
-                // .then((res) => {
-                //   //console.log(res.data)
-                //   setTaskStatus(res.data.subTasks[props.index].done)
-                // })
-                // .catch((err) =>  console.log('Error whiling caching status')+err)
+                axios.get('http://localhost:4000/tasks/'+props.selectedTaskId)
+                .then((res) => {
+                  //console.log(res.data.subTasks[props.index].done)
+                  props.subTask.done = res.data.subTasks[props.index].done;
+                })
+                .catch((err) =>  console.log('Error whiling caching status')+err)
             })
             .catch((err)=> console.log('Error while updating status'+ err))
 
@@ -47,12 +45,12 @@ const toggleDone = (taskStatus) => {
         axios.put('http://localhost:4000/subtask/'+ props.selectedTaskId, subTaskToUpdate)
             .then((res) => {
               //Reload data when update
-                // axios.get('http://localhost:4000/tasks/'+props.selectedTaskId) // {subTasks: {subTaskTitle: props.subTask.subTaskTitle}})
-                // .then((res) => {
-                //   //console.log(res.data)
-                //   setTaskStatus(res.data.subTasks[props.index].done)
-                // })
-                // .catch((err) =>  console.log('Error whiling caching status')+err)
+                axios.get('http://localhost:4000/tasks/'+props.selectedTaskId) // {subTasks: {subTaskTitle: props.subTask.subTaskTitle}})
+                .then((res) => {
+                  //console.log(res.data.subTasks[props.index].done)
+                  props.subTask.done = res.data.subTasks[props.index].done;
+                })
+                .catch((err) =>  console.log('Error whiling caching status')+err)
             })
             .catch((err)=> console.log('Error while updating status'+ err))
 
@@ -62,7 +60,7 @@ const toggleDone = (taskStatus) => {
 
     return (
         <View style={styles.task}>
-          <TouchableOpacity onPress={() => toggleDone(taskStatus)} style={styles.square}>
+          <TouchableOpacity onPress={() => toggleDone(props.subTask.done)} style={styles.square}>
             <Text>
                 {props.subTask.done === 'true'? "✔️" : ""}
             </Text>

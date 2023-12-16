@@ -97,29 +97,28 @@ app.put('/tasks/:id', async(req,res) => {
 //delete task
 app.delete('/tasks/:id', async(req,res) => {
     console.log('Deleted:'+req.params.id);
-    let deleteTask = await taskModel.findByIdAndDelete({_id:req.params.id});
+    let deleteTask = await taskModel.findByIdAndDelete({_id:req.params.id}); // delete function
     res.send(deleteTask);
 })
 
 //get a specific sub task from task id to update
 app.put('/subtask/:id', async(req,res) => {
     let taskLookUp;
-    const taskId = req.body.selectedTaskId;
     const taskTitleToLookUp = req.body.subTaskTitle; 
     const taskStatusToUpdate = req.body.done; 
-    const index = req.body.index;
 
     //console.log(taskTitleToLookUp)
 
-//subTasks: {$elemMatch:  {subTaskTitle: taskTitleToLookUp}}
+    //subTasks: {$elemMatch:  {subTaskTitle: taskTitleToLookUp}}
+    //look up the task that hold that subtask
         taskLookUp = await taskModel.updateOne({_id:req.params.id},
             {
                 $set : {
-                    "subTasks.$[subTasks].done": taskStatusToUpdate 
+                    "subTasks.$[subTasks].done": taskStatusToUpdate //only update that specific record
                 }},
-                { arrayFilters: [ { "subTasks.subTaskTitle": {$eq: taskTitleToLookUp} } ], upsert: true }
+                { arrayFilters: [ { "subTasks.subTaskTitle": {$eq: taskTitleToLookUp} } ], upsert: true } //using array filter to read in the record
         );
-    console.log(taskLookUp)
+    //console.log(taskLookUp)
     res.send(taskLookUp)
 })
 
