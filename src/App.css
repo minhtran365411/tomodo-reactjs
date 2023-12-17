@@ -126,3 +126,8 @@ label {
 .slider.break .thumb{
   background-color: #f9cba0;
 }
+
+.homeContainer {
+  margin: 5% auto;
+  text-align: center;
+}
