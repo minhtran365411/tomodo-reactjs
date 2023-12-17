@@ -18,6 +18,15 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+### `node server.js`
+
+this is the backend server side to connect to database, you must also run this for the app to work properly.
+In the command line do 'cd backend' then 'node server.js'
+Runs the app in the development mode.\
+Open [http://localhost:4000](http://localhost:4000) to view it in your browser.
+
+
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
