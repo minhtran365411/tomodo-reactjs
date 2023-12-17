@@ -109,7 +109,7 @@ const toggleDone = (taskStatus) => {
             axios.get('http://localhost:4000/tasks/'+props.selectedTaskId)
               .then((res) => {
                 //console.log(res.data.subTasks[props.index].done)
-                
+                props.subTaskFn(res.data.subTasks); //invoke subtaskfn to reload list of subtasks
               })
               .catch((err) =>  console.log('Error whiling caching status')+err)
           })

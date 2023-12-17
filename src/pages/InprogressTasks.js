@@ -171,7 +171,7 @@ function InprogressTasks() {
           <FlatList
             style={styles.container}
             data={subTasks}
-            renderItem={({item, index}) => <SubTaskComponent index={index} subTask={item} selectedTaskId={selectedTaskId} />}
+            renderItem={({item, index}) => <SubTaskComponent index={index} subTask={item} selectedTaskId={selectedTaskId} subTaskFn={(subTaskArr) => setSubTaskFn(subTaskArr)} />}
             keyExtractor={item => item.id}
           />
         </Row>

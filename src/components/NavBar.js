@@ -24,7 +24,6 @@ function NavBar() {
           <Nav className="me-auto">
             <Nav.Link className="navlink" href="/">Home</Nav.Link>
             <Nav.Link className="navlink" href="/inprogress-tasks">In-progress Tasks</Nav.Link>
-            <Nav.Link className="navlink" href="/completed-tasks">Completed Tasks</Nav.Link>
             <Nav.Link className="navlink" href="/paramodo">Paramodo</Nav.Link>
           </Nav>
         </Container>

@@ -15,7 +15,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Home from "./pages/Home";
 import InprogressTasks from "./pages/InprogressTasks";
 import Paramodo from "./pages/Paramodo";
-import CompletedTasks from './pages/CompletedTasks';
 
 // Creating route for app
 
@@ -31,10 +30,6 @@ const router = createBrowserRouter([
   {
     path: "/paramodo",
     element: <Paramodo />,
-  },
-  {
-    path: "/completed-tasks",
-    element: <CompletedTasks />,
   }
 ]);
 
