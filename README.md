@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Getting Started with Tomodo
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## User Guide
+
+Please head to Wiki section to find the user guide
 
 ## Available Scripts
 
