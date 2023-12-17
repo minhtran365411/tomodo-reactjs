@@ -23,7 +23,6 @@ function InprogressTasks() {
   //sub-task declaration
   const [selectedTaskId, setSelectedTaskId] = useState();
   //to ensure to choose the first task in load
-  const [firstLoad, setFirstLoad] = useState(false);
 
   //useEffect to allow the web to retrieve data without stopping the web
   useEffect(() => {
@@ -32,10 +31,6 @@ function InprogressTasks() {
       (res) => {
         //console.log(res.data);
         setTasks(res.data);
-        if(!firstLoad) {
-          setSelectedTaskId(tasks[0]._id); //this have to be here so that it only happens after task is loaded
-          setFirstLoad(true)
-        }
         
       }
     ) //async, callback function is a fn pass using another fn, fill in what we want the callback to do in then ()
